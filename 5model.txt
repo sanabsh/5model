@@ -1,0 +1,65 @@
+#include <iostream>
+#include <string>
+#include <queue>
+
+using namespace std;
+
+string p1() {
+    return "****\n";
+}
+
+string p2() {
+    return "!!!!\n";
+}
+
+string p3() {
+    return "@@@@\n";
+}
+
+string p4() {
+    return "####\n";
+}
+
+bool counterChr(const string &str, char chr, int cnt) {
+   int count = 0;
+   for (char i: str) {
+        if (char(i) == chr) {
+           count++;
+       }
+   }
+
+    if (count >= cnt) {
+       return true;
+   }
+   return false;
+}
+
+int main() {
+    string tmp;
+    queue<string> ready;
+    queue<string> deadlock;
+    int count_proc = 0;
+    for (int i = 0; i <= 4; i++) {
+       cout << "\033[1m\033[35m------------ \033[0m" << ++count_proc << "\033[1m\033[35m ------------\033[0m\n";
+       ready.push(p1());
+       tmp += p1();
+       cout << "\033[1m\033[32mp1 : \033[0m" << ready.back();
+        if (counterChr(tmp, '*', 12)) {
+            ready.push(p2());
+           tmp += p2();
+           cout << "\033[1m\033[32mp2 : \033[0m" << ready.back();
+            if (!deadlock.empty())
+                deadlock.pop();
+        } else {
+            deadlock.push(p2());
+            cout << "\033[31mDD : " << deadlock.front() << "\033[0m";
+        }
+        ready.push(p3());
+        tmp += p3();
+        cout << "\033[1m\033[32mp3 : \033[0m" << ready.back();
+        ready.push(p4());
+        tmp += p4();
+        cout << "\033[1m\033[32mp4 : \033[0m" << ready.back();
+    }
+    return 0;
+}
